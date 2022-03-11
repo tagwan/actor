@@ -2,6 +2,7 @@ package com.github.tagwan.actor
 
 import com.github.tagwan.actor.dispatch.Envelope
 import com.github.tagwan.actor.dispatch.Mailbox
+import com.github.tagwan.actor.pf.PartialFunction
 import kotlinx.coroutines.launch
 
 abstract class AbstractActor(
@@ -20,7 +21,11 @@ abstract class AbstractActor(
 
     }
 
-    class Receive {
-
+    class Receive(
+        private val onMessage: PartialFunction<Any, Any>
+    ) {
+        fun orElse(other: Receive): Receive {
+            return Receive(onMessage.orElse(other.onMessage))
+        }
     }
 }
