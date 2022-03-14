@@ -1,10 +1,9 @@
 package com.github.tagwan.actor
 
-import kotlinx.coroutines.CoroutineScope
 
-interface ActorContext {
+class ActorContext {
 
-    fun scope(): CoroutineScope
-
-    fun mailbox()
+    fun sender(): ActorRef {
+        return ActorRef.NoSender
+    }
 }

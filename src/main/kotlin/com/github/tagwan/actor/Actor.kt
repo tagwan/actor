@@ -6,8 +6,11 @@ interface Actor {
 
     val context: ActorContext
 
-    val process: Actor.(Envelope) -> Unit
-
     infix fun receive(msg: Envelope)
 
+    fun loop()
+
+    fun preStart()
+
+    fun postStop()
 }

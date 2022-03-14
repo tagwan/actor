@@ -2,8 +2,14 @@ package com.github.tagwan.actor
 
 import java.lang.reflect.Modifier
 
+/**
+ * Props
+ *
+ * @property actor
+ * @constructor Create empty Props
+ */
 class Props private constructor(
-    val actor: ActorRef
+    val actor: Actor
 ){
 
     companion object {
@@ -13,7 +19,7 @@ class Props private constructor(
                 throw IllegalArgumentException("Actor class [${clazz.name}] must not be abstract")
         }
 
-        fun create(clazz: Class<*>, supplier: () -> ActorRef): Props {
+        fun create(clazz: Class<*>, supplier: () -> Actor): Props {
             this validate clazz
             return Props(supplier())
         }

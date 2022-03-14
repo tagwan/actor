@@ -1,6 +1,5 @@
 package com.github.tagwan.actor.dispatch
 
-import com.github.tagwan.actor.Actor
 import com.github.tagwan.actor.ActorRef
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
@@ -10,12 +9,12 @@ class KMailbox(
     private val capacity: Int = 1000
 ) : Mailbox {
 
-    private val inputChannel = Channel<Envelope>(capacity)
+    private var inputChannel = Channel<Envelope>(capacity)
 
     override suspend fun hasMessages(): Boolean  = inputChannel.toList().isEmpty()
 
-    override suspend fun enqueue(receiver: Actor, handle: Envelope) {
-        //pass
+    override suspend fun enqueue(handle: Envelope) {
+        inputChannel.send(handle)
     }
 
     override suspend infix fun consumeEach(consumer: (Envelope) -> Unit) {
@@ -25,7 +24,7 @@ class KMailbox(
     }
 
     override suspend fun cleanUp(owner: ActorRef, deadLetters: MessageQueue) {
-        //pass
+        inputChannel = Channel(capacity)
     }
 
 }

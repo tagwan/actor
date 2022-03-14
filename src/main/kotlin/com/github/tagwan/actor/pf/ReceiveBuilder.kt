@@ -35,11 +35,26 @@ class ReceiveBuilder {
         return this
     }
 
-    fun matchAny(apply: Consumer<Any>) {
+    fun matchAny(action: Consumer<Any>) {
+        this addStatement object : PartialFunction<Any, Unit>() {
+            override fun applyIfDefined(x: Any) {
+                action.accept(x)
+            }
 
+            override fun test(t: Any): Boolean {
+                return true
+            }
+        }
+        return this
     }
 
     fun build(): AbstractActor.Receive {
         return AbstractActor.Receive(statements?.orElse(PartialFunction.EMPTY) ?: PartialFunction.EMPTY)
+    }
+
+    companion object {
+        fun create(): ReceiveBuilder {
+            return ReceiveBuilder()
+        }
     }
 }
