@@ -6,7 +6,7 @@ interface Mailbox {
 
     suspend fun hasMessages(): Boolean
 
-    suspend fun enqueue(handle: Envelope)
+    suspend infix fun enqueue(handle: Envelope)
 
     suspend infix fun consumeEach(consumer: (Envelope) -> Unit)
 

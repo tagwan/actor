@@ -7,6 +7,8 @@ open class ActorRef(
     private val path: String = ""
 ) : Serializable {
 
+    val address = ActorPath(path)
+
     infix fun tell(msg: Any) {
         this.tell(msg, ActorRef.NoSender)
     }

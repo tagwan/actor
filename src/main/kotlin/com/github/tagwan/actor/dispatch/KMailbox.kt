@@ -13,7 +13,7 @@ class KMailbox(
 
     override suspend fun hasMessages(): Boolean  = inputChannel.toList().isEmpty()
 
-    override suspend fun enqueue(handle: Envelope) {
+    override suspend infix fun enqueue(handle: Envelope) {
         inputChannel.send(handle)
     }
 

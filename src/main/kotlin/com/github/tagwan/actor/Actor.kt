@@ -6,9 +6,9 @@ interface Actor {
 
     val context: ActorContext
 
-    infix fun receive(msg: Envelope)
+    suspend infix fun receive(msg: Envelope)
 
-    fun loop()
+    suspend fun loop()
 
     fun preStart()
 

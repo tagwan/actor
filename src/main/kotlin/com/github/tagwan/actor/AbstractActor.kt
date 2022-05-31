@@ -11,24 +11,29 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 @ObsoleteCoroutinesApi
 abstract class AbstractActor(
     override val context: ActorContext = ActorContext(),
-    mailbox: Mailbox = KMailbox(),
+    val mailbox: Mailbox = KMailbox(),
     name: String = "",
     nThreads: Int = 0
 ) : Actor {
 
     private var dispatcher: ExecutionContext = ExecutionContext(mailbox, createReceive(), name, nThreads)
 
+    private val receive = createReceive()
+
     @ObsoleteCoroutinesApi
-    override infix fun receive(msg: Envelope) {
-        dispatcher sendEnvelop msg
+    override suspend infix fun receive(msg: Envelope) {
+        mailbox enqueue msg
     }
 
     fun receiveBuilder(): ReceiveBuilder = ReceiveBuilder.create()
 
     abstract fun createReceive(): AbstractActor.Receive
 
-    override fun loop() {
-        dispatcher.monitoringMailbox()
+    override suspend fun loop() {
+        mailbox.consumeEach { envelop ->
+            val msg = envelop.message
+            receive.onMessage.apply(msg)
+        }
     }
 
     override fun preStart() {
