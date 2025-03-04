@@ -5,10 +5,10 @@ plugins {
     `java-library`
     java
     distribution
-    kotlin("jvm") version "1.5.31" apply false
+    kotlin("jvm") version Versions.Kotlin apply false
 }
 
-group = "com.github.tagwan"
+group = "com.github.dawndev"
 version = "1.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
@@ -22,15 +22,17 @@ apply(plugin = "kotlin")
 apply(plugin = "java-library")
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    api(Deps.Kotlin.Reflect)
+    api(Deps.Kotlin.Jvm)
+    implementation(Deps.CoroutinesJdk8)
+    implementation(Deps.CoroutinesCore)
 
-    implementation("org.slf4j:slf4j-api:1.7.33")
-    implementation("org.slf4j:slf4j-log4j12:1.7.33")
+    api(Deps.Slf4j.Api)
+    api(Deps.Slf4j.Impl)
 
-    testImplementation("junit:junit:4.12")
+    testImplementation(Deps.Junit.JupiterEngine)
+    testImplementation(Deps.Junit.JupiterApi)
+    testImplementation(Deps.Junit.Jupiter)
 }
 
 tasks {
