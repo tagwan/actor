@@ -6,7 +6,7 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.toList
 
 class KMailbox(
-    private val capacity: Int = 1000
+    private val capacity: Int = Channel.UNLIMITED
 ) : Mailbox {
 
     private var inputChannel = Channel<Envelope>(capacity)
